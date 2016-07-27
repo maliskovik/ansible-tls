@@ -1,0 +1,5 @@
+---
+# Default role variables
+
+ssl_cert_directory: /opt/certs
+ssl_local_cert_directory: "files/certs"

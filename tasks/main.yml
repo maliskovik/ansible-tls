@@ -1,0 +1,4 @@
+---
+# SSL configuration
+
+- include: ssl.yml
