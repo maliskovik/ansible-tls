@@ -1,0 +1,36 @@
+---
+# tls tasks
+
+- name: Create cert directory
+  file:
+    path: "{{ tls_cert_directory }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Copy certs
+  copy:
+    mode: 0600
+    owner: root
+    group: root
+    src: "{{ tls_local_cert_directory }}/{{ item }}"
+    dest: "{{ tls_cert_directory }}"
+  with_items: '{{ tls_system_certificates }}'
+  when: tls_system_certificates is defined
+
+- name: Copy user certificates
+  copy:
+    mode: 0600
+    owner: "{{ item.owner }}"
+    group: "{{ item.group|default(item.owner) }}"
+    src: "{{ tls_local_cert_directory }}/{{ item.name }}"
+    dest: "{{ tls_cert_directory }}/{{ item.name }}"
+  with_items: "{{ tls_user_certificates }}"
+  when: tls_user_certificates is defined
+
+- name: Generate dh params
+  command: opentls dhparam -out dhparams.pem 2048
+  args:
+    creates: "dhparams.pem"
+    chdir: "{{ tls_cert_directory }}"

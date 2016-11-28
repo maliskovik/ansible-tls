@@ -1,4 +1,4 @@
 ---
-# SSL configuration
+# tls configuration
 
-- include: ssl.yml
+- include: tls.yml
