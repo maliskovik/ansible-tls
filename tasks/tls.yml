@@ -16,7 +16,7 @@
     group: root
     src: "{{ tls_local_cert_directory }}/{{ item }}"
     dest: "{{ tls_cert_directory }}"
-  with_items: '{{ tls_system_certificates }}'
+  with_items: '{{ tls_system_certificates|default(omit) }}'
   when: tls_system_certificates is defined
 
 - name: Copy user certificates
@@ -26,11 +26,11 @@
     group: "{{ item.group|default(item.owner) }}"
     src: "{{ tls_local_cert_directory }}/{{ item.name }}"
     dest: "{{ tls_cert_directory }}/{{ item.name }}"
-  with_items: "{{ tls_user_certificates }}"
+  with_items: "{{ tls_user_certificates|default(omit) }}"
   when: tls_user_certificates is defined
 
 - name: Generate dh params
-  command: opentls dhparam -out dhparams.pem 2048
+  command: openssl dhparam -out dhparams.pem 2048
   args:
     creates: "dhparams.pem"
     chdir: "{{ tls_cert_directory }}"
