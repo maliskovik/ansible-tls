@@ -9,3 +9,4 @@ You can also specify user certificates which are stored in user designated locat
 
 * tls_cert_directory - where should certifactes be placed on the server - default /opt/certs
 * tls_local_cert_directory - where certificates are stored locally
+* tls_user_certificates - User certificates to cerate as non-root.
