@@ -1,4 +1,4 @@
 ---
 # tls configuration
 
-- include: tls.yml
+- ansible.builtin.include_tasks: tls.yml
