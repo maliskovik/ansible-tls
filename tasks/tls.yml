@@ -16,7 +16,7 @@
     group: root
     src: "{{ tls_local_cert_directory }}/{{ item }}"
     dest: "{{ tls_cert_directory }}"
-  with_items: '{{ tls_system_certificates|default(omit) }}'
+  with_items: "{{ tls_system_certificates|default('') }}"
   when: tls_system_certificates is defined
 
 - name: Copy user certificates
@@ -26,7 +26,7 @@
     group: "{{ item.group|default(item.owner) }}"
     src: "{{ tls_local_cert_directory }}/{{ item.name }}"
     dest: "{{ tls_cert_directory }}/{{ item.name }}"
-  with_items: "{{ tls_user_certificates|default(omit) }}"
+  with_items: "{{ tls_user_certificates|default('') }}"
   when: tls_user_certificates is defined
 
 - name: Generate dh params
@@ -42,6 +42,6 @@
     group: root
     src: "{{ tls_local_cert_directory }}/{{ item }}"
     dest: "/usr/local/share/ca-certificates/"
-  with_items: '{{ tls_ca_certificates|default(omit) }}'
+  with_items: "{{ tls_ca_certificates|default('') }}"
   when: tls_ca_certificates is defined
   notify: Update trusted CAs
